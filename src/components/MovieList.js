@@ -11,6 +11,7 @@ import Loader from './Loader';
 const MovieList = ({type, title}) => {
 
 SwiperCore.use([Autoplay]);
+
   const [movieList, setMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState (true);
   const [error, setError] = useState();
@@ -49,7 +50,7 @@ SwiperCore.use([Autoplay]);
             grabCursor={true}
             spaceBetween={30}
             slidesPerView={5}
-            loopautoplay={{delay:3000, disableOnInteraction:false}}>
+            loop autoplay={{delay:3000, disableOnInteraction:false}}>
              {movieList.map(el => (<SwiperSlide key={el.id}><Movie movieobj={el} /></SwiperSlide>))}
             </Swiper>  : ''} 
             
