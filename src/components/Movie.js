@@ -14,7 +14,7 @@ const MoviePoster = styled.img`
     border-radius:15px;
     // position:relative;
     display:block;
-       
+  
 `;
 
 const MovieTitle = styled.span`
@@ -40,20 +40,20 @@ const MovieDate = styled.span`
 const Movie = ({movieobj})=>{
 
     return (  
-               <div className="movieCard">
-                 <div className="movie" key={movieobj.id}>  
-                  <MoviePoster src={IMAGE_URL + movieobj.poster_path}  alt={movieobj.title}/> 
-                   <div className="movie-img"></div>
-                  <MovieTitle>{movieobj.title ? movieobj.title : movieobj.name}
-                  <div className="view-average"> 
-                  <Progress width="35px"  type="circle" strokeColor={{ '0%': '#108ee9', '100%': '#87d068'}} percent={movieobj.vote_average * 10}/>  
-                  </div>
-                  <MovieDate>{movieobj.release_date}</MovieDate></MovieTitle>
-                  <Link className="btn-movie" to={`/movie/${movieobj.id}`}>View this movie</Link>
-               
-                </div>
-               </div>
-                
+        <div className="movieCard">
+          <Link to={`/movie/${movieobj.id}`}>  
+            <div className="movie" key={movieobj.id}>  
+            <MoviePoster  src={IMAGE_URL + movieobj.poster_path}  alt={movieobj.title}/> 
+            <div className="movie-img"></div>
+            <MovieTitle>{movieobj.title ? movieobj.title : movieobj.name}
+            <div className="view-average"> 
+            <Progress width="35px"  type="circle" strokeColor={{ '0%': '#108ee9', '100%': '#87d068'}} percent={movieobj.vote_average * 10}/>  
+            </div>
+            <MovieDate>{movieobj.release_date}</MovieDate></MovieTitle>
+            </div>
+          </Link>
+        </div>
+           
                 
     );
 };

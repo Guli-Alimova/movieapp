@@ -8,7 +8,7 @@ const Home =()=>{
         <div className="wrapper">
         
             <Intro />
-            <Slider/>
+            <Slider type="popular"/>
             <MovieList type='upcoming' title='Upcoming movies'/>
             <MovieList type='top_rated' title='Top movies'/>
             <MovieList type='popular' title='Popular movies'/>

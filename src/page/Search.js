@@ -1,39 +1,59 @@
 import React from 'react'
-import { MY_API_KEY } from '../global';
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import Movie from '../components/Movie';
+import apiCalls from '../config/Api';
+import Loader from '../components/Loader';
 
-const SEARCH_API = `https://api.themoviedb.org/3/search/movie?api_key=${MY_API_KEY}&language=en-US&include_adult=false`;
 
 const Search = () => {
     const [moviesList, setMoviesList] = useState([]);
-    
-    useEffect(() => {
-        fetch(SEARCH_API + '&query=a').then( res => res.json()).then( data => {
-            setMoviesList(data.results);
-            console.log(data.results);
-        });
-    }, []);
-    
-    const mappedMovies = moviesList.map( el => {
-        return ( <Movie movieobj={el} key={el.id} /> );
-    });
-
+    const [error, setError] = useState();
+    const [isLoading, setIsLoading] = useState(true);
+  
+   
     const handleSearch = (e) =>{
-        if(e.target.value >2){
-            fetch(SEARCH_API + `&query=${e.target.value}`).then(res => res.json()).then( data => {
-                console.log(data.results);
-                setMoviesList(data.results);
-            });
+        if(e.target.value.length >2){
+            const search = async ()=>{
+                try{
+                    const data = await apiCalls.search({
+                        language:"en-US",
+                        include_adult:false,
+                        query:e.target.value, 
+                    });
+                    setIsLoading(false);
+                   setMoviesList(data.results);
+                   setIsLoading(false);
+            
+                }catch (error){
+                    setError(error.message);
+                    
+                }
+            }
+            search();
         }
     }
     return (
-        <div>
-           <input type="text" placeholder="Search" onChange={handleSearch}></input> 
-           {mappedMovies}
-         
+        <div className="wrap">
+              <input type="text" className="searchTerm" placeholder="Search?" onChange={handleSearch}/> 
+          
+           <div >
+           {error ? <h3>{error}</h3>: ''}
+            {isLoading ? <Loader/> : ''} 
+            {!isLoading && !error ?
+           <div className="search">
+            {moviesList.map( (el) => (
+               <Movie movieobj={el} key={el.id} /> 
+              
+              ))}</div> :'' }  
+              
+           <button type="button" className="searchButton">
+             <i className="fa fa-search"></i>
+          </button>
         </div>
+     </div>
     )
 }
 
 export default Search;
+
+          

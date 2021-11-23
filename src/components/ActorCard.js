@@ -14,21 +14,23 @@ const ActorCard = ({actorobj}) => {
     border: 1px solid rgb(173, 170, 170) 
     border-radius:5px;
   `
-  const Actor_img = styled.img`
+  const ActorImg = styled.img`
     width:200px;
     height:250px;
     margin-bottom:20px;
     border-radius:8px;
+    @media (max-width: 1199px) {
+      width:173px;
    
   `
-  const Actor_name = styled.h3`
+  const ActorName = styled.h3`
     font-weight: bold;
     color: #000;
     font-size: 1em;
     overflow: hidden;
     text-overflow: ellipsis;
   `
-  const Actor_character = styled.p`
+  const ActorCharacter = styled.p`
     font-size: 0.9em;
     overflow: hidden;
     text-overflow: ellipsis;    
@@ -40,19 +42,22 @@ const ActorCard = ({actorobj}) => {
     margin-bottom:20px;
      
   `
-  const Poster_img = styled.img`
+  const PosterImg = styled.img`
      width:200px;
      height:250px;
      border-radius:8px; 
+  
+     
   `
     return (
    
         <ActorCard>
           <div>
-            {actorobj.profile_path ? <Actor_img src={IMAGE_URL + actorobj.profile_path}  alt="actor image"/> : <Poster><Poster_img src="/img/no-image.png" /></Poster>}
+            {actorobj.profile_path ? <ActorImg src={IMAGE_URL + actorobj.profile_path}  alt="actor image"/> 
+            : <Poster><PosterImg  src="/img/no-image.png" /></Poster>}
           </div>
-          <Actor_name>{actorobj.name}</Actor_name>
-          <Actor_character>{actorobj.character}</Actor_character>
+          <ActorName>{actorobj.name}</ActorName>
+          <ActorCharacter>{actorobj.character}</ActorCharacter>
           </ActorCard>  
       
     )

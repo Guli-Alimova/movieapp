@@ -1,0 +1,92 @@
+@media(max-width: 1199px){
+  
+    .searchTerm {
+        width: 57%;;
+    }
+
+}  
+
+@media(max-width: 991px){
+    .searchButton{
+        left:579px;
+    }
+}
+
+@media(max-width: 767px){
+.intro{
+    padding:40px;
+}
+.btn-movie{
+    width: 134px;
+}
+.filter-found {
+    width: 134px;
+}
+.cercle{
+display: none;
+}
+.movie-genres{
+    display:block;
+}
+.searchButton{
+    left:421px;
+}
+
+
+}
+
+@media(max-width: 565px){
+.genre-menu{
+    padding:10px;
+}
+.searchButton{
+    left:355px;
+    top:113px;
+}
+.modal{
+    display: block;
+  
+}
+.main-link{
+    display: none;
+}
+.modal-close{
+    padding:1px;
+}
+.burger-menu{
+    left:40px;
+}
+.movie-grid{
+    justify-content: center;
+}
+.search{
+    justify-content: center;
+}
+}
+
+@media(max-width: 480px){
+    
+.intro__text{
+    font-size: 1em;
+}
+.burger-menu{
+    left:63px;
+}
+.searchButton{
+    left:229px;
+   
+}
+
+}
+@media(max-width: 320px){
+    .btn-movie{
+        width: 84px;
+    }
+    .searchButton{
+        left:228px;
+        top:113px;
+    }
+    .burger-menu{
+        left:40px;
+    }
+}

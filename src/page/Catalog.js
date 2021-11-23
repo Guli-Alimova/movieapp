@@ -5,21 +5,25 @@ import Moviegrid from '../components/Moviegrid';
 import {useParams} from 'react-router-dom'
 
 
-const Catalog_section = styled.section`
+const CatalogSection = styled.section`
   padding:30px;
  
     
 `
-const Catalog_main= styled.div`
+const CatalogMain= styled.div`
    display:flex;
 
 `
-const Catalog_aside= styled.div`
+const CatalogAside= styled.div`
     width:20%;
- 
-   
+    @media (max-width: 991px) {
+       width:40%;
+    }
+    @media (max-width: 565px) {
+        width:50%;
+     }
 `
-const Catalog_menu = styled.div`
+const CatalogMenu = styled.div`
     width:80%;
    
 `
@@ -27,21 +31,21 @@ const Catalog = () => {
     const {genreid} = useParams();
     return (
         <div>
-            <Catalog_section>
+            <CatalogSection>
                 <div className="container">
-                    <Catalog_main>
-                        <Catalog_aside>
+                    <CatalogMain>
+                        <CatalogAside>
                             <Genreslist/>
-                        </Catalog_aside>
+                        </CatalogAside>
                         
-                        <Catalog_menu>
+                        <CatalogMenu>
                             <Moviegrid genre={genreid}/>
-                        </Catalog_menu>
+                        </CatalogMenu>
 
-                     </Catalog_main>
+                     </CatalogMain>
          
                 </div>
-           </Catalog_section>
+           </CatalogSection>
         </div>
     )
 }

@@ -1,12 +1,11 @@
 import React from 'react'
 import Select from 'react-select'
 import { useState, useEffect } from 'react';
-import { API_PARAMS, MY_API_KEY } from '../global';
 import Movie from './Movie';
 import Loader from './Loader';
+import apiCalls from '../config/Api';
 
 
-const GENRES_API = `https:api.themoviedb.org/3/genre/movie/list${API_PARAMS}`;
 const BigFilter = () => {
    
     const [year, setYear] = useState('');
@@ -18,26 +17,25 @@ const BigFilter = () => {
     const [isLoading, setIsLoading] = useState(true);
     
   
-    const SORT_BY_ALL = `https://api.themoviedb.org/3/discover/movie?api_key=${MY_API_KEY}&language=en-US&sort_by=${sort}.desc&include_adult=false&page=1&year=${year}&with_genres=${genre}`;
+   
    
   useEffect(() => {
-    fetch(GENRES_API)
-    .then(res =>{
-        if(!res.ok){
-            throw Error ('Error in the server')
-        }
-        return res.json();
-    }).then(data=>{
-       setGenreList(data.genres)
- 
-    }).catch(err =>{
-       setError(err.message)
-    });
+    const genres = async ()=>{
+      try{
+          const data = await apiCalls.genres();
+          setGenreList(data.genres)
+       
+      }catch (error){
+          setError(error.message);
+          
+      }
+  }
+  genres();
 }, []);
 
-  const handleGenreChange = (newValue) => {
-    console.log(newValue.value);
-    const mappedGenre = newValue.map(el => el.value);
+  const handleGenreChange = (obj) => {
+    console.log(obj.value);
+    const mappedGenre = obj.map(el => el.value);
     setGenre(`${mappedGenre}`);
     console.log(`${mappedGenre}`)
   };
@@ -276,9 +274,9 @@ const BigFilter = () => {
   ];
 
 
-  const handleYearChange = (newValue) => {
-    setYear(newValue.value);
-    console.log(newValue);
+  const handleYearChange = (obj) => {
+    setYear(obj.value);
+  
   };
 
   const sortOptions = [
@@ -289,31 +287,34 @@ const BigFilter = () => {
     { value: 'original_title.asc', label: 'Title' }
   ];
 
-  const handleSortChange = (newValue) =>{
-    setSort(newValue.value);
-    console.log(newValue)
+  const handleSortChange = (obj) =>{
+    setSort(obj.value);
+    console.log(obj.value)
   }
 
   const [discover, setDiscover] = useState([]);
 
   const handleDiscover = () => {
-    fetch(SORT_BY_ALL)
-      .then(res =>{
-        if(!res.ok){
-          throw Error('Error in the server');
-        }
-        return res.json()
-      })
-      .then (data =>{
-        console.log(data);
-        setDiscover(data.results);
-        setTotal(data.total_results);
-        setIsLoading(false);
-      })
-      .catch (err =>{
-        setError(err.message);
-        setIsLoading(false);
-      });
+    const discover= async ()=>{
+      try{
+          const data = await apiCalls.discover({
+            language:"en-US",
+            include_adult: false,
+            with_genres: genre,
+            sort_by:sort,
+            page:1,
+            year:year
+          });
+          setDiscover(data.results)
+          setTotal(data.total_results);
+          setIsLoading(false);
+       
+      }catch (error){
+          setError(error.message);
+          
+      }
+  }
+  discover();
   };
  
     return (

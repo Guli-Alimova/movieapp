@@ -2,7 +2,6 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useState } from "react/cjs/react.development";
-import { MY_API_KEY } from "../global";
 import styled from "styled-components";
 import { ORIGINAL_IMAGE_URL } from "../global";
 import { Progress } from "antd";
@@ -13,11 +12,9 @@ import Loader from "../components/Loader";
 import { Link } from "react-router-dom";
 import SimilarCard from '../components/SimilarCard'
 import {useHistory} from 'react-router-dom';
+import apiCalls from '../config/Api';
 
 
-
-const SINGLE_MOVIE_API = `https://api.themoviedb.org/3/movie/`;
-const API_PARAMS = `?api_key=${MY_API_KEY}&language=en-US`;
 const IMAGE_URL = "https://image.tmdb.org/t/p/w500";
 
 SwiperCore.use([Autoplay]);
@@ -38,58 +35,46 @@ const ViewMovie = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    console.log(id);
-    fetch(SINGLE_MOVIE_API + id + API_PARAMS)
-      .then((res) =>{
-        if(!res.ok){
-          throw Error('Error in the server')
-        }
-       return  res.json();
-      }).then((data) => {
-        setMovieInfo(data);
-        setIsLoading(false);
-      }).catch(err => {
-        setIsLoading(false);
-        setError(err.message);
-      });
+    const detail = async ()=>{
+      try{
+          const data = await apiCalls.detail(id);
+          setMovieInfo(data)
+          setIsLoading(false)
+      }catch (error){
+          setError(error.message);
+          
+      }
+  }
+  detail();
   // Actor
 
+  const actorAndCast = async ()=>{
+    try{
+        const data = await apiCalls.actorsAndCast(id);
+        setActorInfo(data.cast)
+        setIsLoading(false)
+    }catch (error){
+        setError(error.message);
+        
+    }
+}
+actorAndCast();
 
-    fetch(SINGLE_MOVIE_API + id + "/credits" + API_PARAMS)
-      .then((res) => {
-        if (!res.ok) {
-          throw Error("error in server");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setActorInfo(data.cast);
-        setIsLoading(false);
-        //  console.log(data);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        //  console.log(err.message);
-        setError(err.message);
-      });
 
-    // Similar
-    fetch(SINGLE_MOVIE_API + id + "/similar" + API_PARAMS)
-      .then((res) => {
-        if (!res.ok) {
-          throw Error("error in server");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setSimilarInfo(data.results);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setError(err.message);
-      });
+const   similar = async ()=>{
+  try{
+      const data = await apiCalls.similar(id);
+      setSimilarInfo(data.results)
+      setIsLoading(false)
+  }catch (error){
+      setError(error.message);
       
+  }
+}
+similar();
+
+   
+    
   }, [id]);
 
 
@@ -101,6 +86,9 @@ const ViewMovie = () => {
     display: flex;
     justify-content: space-between;
     color: #fff;
+   
+   
+
   `
   const Viewimg = styled.div`  
      z-index:2 
@@ -109,27 +97,32 @@ const ViewMovie = () => {
     width: 100%;
     border-radius: 15px;
     z-index:2;
-
-    
+    @media  only screen and  (max-width: 565px) {
+      display:none;
+  }
   `;
   const Movieoption = styled.div`
     width: 100%;
     padding: 20px;
     z-index:2;
   `;
-  const MovieTitle = styled.div``;
+  const MovieTheme = styled.div``;
   const MovieOverview = styled.div``;
   const MovieAverage = styled.div`
     display: flex;
     align-items: center;
     margin:10px;
+    @media (max-width: 767px) {
+      margin:0;
   `;
-  const Movie_title = styled.h2`
+  const MovieTitle = styled.h2`
     font-weight: 700;
     color: #fff;
     font-size: 2.2rem;
+    @media (max-width: 767px) {
+      font-size:1.2rem;
   `;
-  const Movie_span = styled.div`
+  const MovieSpan = styled.div`
     display: flex;
   `;
 
@@ -156,9 +149,9 @@ const ViewMovie = () => {
               />
             </Viewimg>
             <Movieoption>
-              <MovieTitle>
-                <Movie_title>{movieInfo.title}</Movie_title>
-                <Movie_span className="spans">
+              <MovieTheme>
+                <MovieTitle>{movieInfo.title}</MovieTitle>
+                <MovieSpan className="spans">
                   <span className="movie_date">{movieInfo.release_date}</span>
                   {movieInfo.hasOwnProperty("production_countries")
                     ? movieInfo.production_countries.map(
@@ -169,8 +162,8 @@ const ViewMovie = () => {
                    <span className="movie-genres" key={index}> {genre.name} </span>))  : null} </p>
                   <span className="cercle"></span>
                   <span>{movieInfo.runtime}min</span>
-                </Movie_span>
-              </MovieTitle>
+                </MovieSpan>
+              </MovieTheme>
               <MovieAverage>
                 <Progress
                   width="50px"
@@ -207,6 +200,35 @@ const ViewMovie = () => {
             delay: 3000,
             disableOnInteraction: false,
           }}
+          breakpoints={{
+            "320": {
+              "slidesPerView": 1,
+              "spaceBetween": 10
+            },
+            "480": {
+              "slidesPerView": 2,
+              "spaceBetween": 10
+            },
+            "565": {
+              "slidesPerView": 2,
+              "spaceBetween": 20
+            },
+            "767": {
+              "slidesPerView": 3,
+              "spaceBetween": 20
+            },
+            "991": {
+                "slidesPerView": 4,
+                "spaceBetween": 20
+              },
+              "1199": {
+                "slidesPerView": 5,
+                "spaceBetween": 20
+              },
+
+
+          }}
+
         >
           {actorList.map((el) => (
             <SwiperSlide key={el.id}><ActorCard actorobj={el} /></SwiperSlide> ))}
@@ -230,6 +252,32 @@ const ViewMovie = () => {
           loop autoplay={{
             delay: 3000,
             disableOnInteraction: false,
+          }}
+          breakpoints={{
+            "320": {
+              "slidesPerView": 1,
+              "spaceBetween": 10
+            },
+            "480": {
+              "slidesPerView": 2,
+              "spaceBetween": 10
+            },
+            "565": {
+              "slidesPerView": 2,
+              "spaceBetween": 20
+            },
+            "767": {
+              "slidesPerView": 3,
+              "spaceBetween": 20
+            },
+            "991": {
+                "slidesPerView": 4,
+                "spaceBetween": 20
+              },
+              "1199": {
+                "slidesPerView": 5,
+                "spaceBetween": 20
+              }
           }}
         >
           {similarInfo.map((el) => (<SwiperSlide key={el.id}> <Link  to={`/movie/${el.id}`}><SimilarCard similarobj={el} /></Link></SwiperSlide>))}

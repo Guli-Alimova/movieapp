@@ -1,39 +1,41 @@
 import React from 'react'
 import {useState, useEffect} from 'react';
-import { MY_API_KEY } from '../global';
 import {  NavLink } from 'react-router-dom';
-import { Button } from 'antd';
+import apiCalls from '../config/Api';
+import Loader from './Loader';
 
-
- const GENRES_API = `https:api.themoviedb.org/3/genre/movie/list?api_key=${MY_API_KEY}&language=en-US`;
-const Genreslist = (el) => {
+ 
+const Genreslist = () => {
     const [genresList, setGenresList]  = useState([]);
     const [error, setError] = useState();
+    const [isLoading, setIsLoading] = useState(true);
+   
     useEffect(() => {
-       fetch(GENRES_API)
-       .then(res =>{
-           if(!res.ok){
-               throw Error ('Error in the server')
-           }
-           return res.json();
-       }).then(data=>{
-           setGenresList(data.genres)
-    
-       }).catch(err =>{
-          setError(err.message)
-       });
-    
-          
+        const genres = async ()=>{
+            try{
+                const data = await apiCalls.genres();
+                setGenresList(data.genres)
+                setIsLoading(false)
+             
+            }catch (error){
+                setError(error.message);
+                
+            }
+        }
+        genres();
         
     }, []);
     return (
   
         <div className="genres">
-        <h1>Genres</h1>
+        <h1>Genres</h1> 
+        {error ? <h3>{error}</h3>: ''}
+            {isLoading ? <Loader/> : ''} 
+            {!isLoading && !error ?
             <div className="genre-menu">
-                {genresList.map(el=>( <NavLink  to={`/catalog/${el.id}`}key={el.id} activeClassName="active-genre" className="genres_list" >{el.name}</NavLink>))}
+                {genresList.map(el=>( <NavLink  to={`/catalog/${el.id}`}key={el.id} activeClassName="active-genre" className="genres_list" >{el.name}</NavLink>))} 
            
-            </div>
+            </div>: ''} 
             
        </div>
       

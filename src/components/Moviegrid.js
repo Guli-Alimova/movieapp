@@ -1,11 +1,11 @@
 
 import React from 'react'
 import {useEffect, useState} from 'react';
-import { BY_GENRES } from '../global';
 import Movie from './Movie';
 import Loader from './Loader'
 import  usePrevious  from '../hooks';
-import { TOP_MOVIES_API } from '../global';
+import apiCalls from '../config/Api';
+
 
 
 const Moviegrid = (props) => {
@@ -25,7 +25,7 @@ const Moviegrid = (props) => {
    };
     useEffect(()=>{ 
       let list; 
-        if(prevGenre != props.genre){
+        if(prevGenre !== props.genre){
             list = []
         }else if(prevPage === page){
             list = []
@@ -33,41 +33,25 @@ const Moviegrid = (props) => {
         }else{
             list = movies;
         }
-        if(props.genre == undefined){
-            fetch(TOP_MOVIES_API)
-        .then(res =>{
-            if(!res.ok){
-                throw Error('Error in the server')
+        const discover = async ()=>{
+            try{
+                const data = await apiCalls.discover({
+                    language:"en-US",
+                    include_adult: false,
+                    with_genres: props.genre,
+                    page
+                });
+                setMovies(list.concat(data.results));
+                setTotalPage(data.total_pages);
+                setIsLoading(false)
+            }catch (error){
+                setError(error.message);
+                
             }
-            return res.json();
-        }).then(data => {
-            setMovies(data.results);
-            setIsLoading(false);
-            // console.log(data.results);
-        }).catch(err => {
-            setIsLoading(false);
-            setError(err.message);
-        });
-        }else{
-             fetch(BY_GENRES + props.genre + '&page=' + page)
-        .then(res=>{
-            if(!res.ok){
-                throw Error ('Error in the server')
-            }
-            return res.json();
-        }).then(data =>{
-        setMovies([...list, ...data.results]);
-        setTotalPage(data.total_pages)
-        setIsLoading(false);
-
-        }).catch (err =>{
-            setIsLoading(false);
-            setError(err.message);
-        });
         }
+        discover();
 
-
-    },[props.genre, page]);
+    },[movies, prevGenre, prevPage, page, props.genre ]);
 
 
     return (

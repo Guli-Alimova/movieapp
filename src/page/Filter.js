@@ -3,7 +3,7 @@ import BigFilter from '../components/BigFilter'
 
 const Filter = () => {
     return (
-        <div>
+        <div className="big-forum">
            <BigFilter/>
         </div>
     )
