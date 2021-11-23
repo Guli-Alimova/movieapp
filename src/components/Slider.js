@@ -137,7 +137,7 @@ getMovies();
       modules={[Autoplay]}
       spaceBetween={30}
       slidesPerView={1}
-      loopautoplay={{delay:3000,disableInteraction:false}}
+      loop autoplay={{delay:3000,disableInteraction:false}}
     >
 
       {sliderList.map(el=>(<SwiperSlide  key={el.id}>
