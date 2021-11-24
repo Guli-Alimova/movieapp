@@ -1,19 +1,9 @@
 @media(max-width: 1199px){
   
-    .searchTerm {
-        width: 57%;
-
-    }
-    .searchButton{
-        left:755px;
-    }
-
 }  
 
 @media(max-width: 991px){
-    .searchButton{
-        left:579px;
-    }
+  
 }
 
 @media(max-width: 767px){
@@ -32,9 +22,7 @@ display: none;
 .movie-genres{
     display:block;
 }
-.searchButton{
-    left:421px;
-}
+
 
 
 }
@@ -43,10 +31,7 @@ display: none;
 .genre-menu{
     padding:10px;
 }
-.searchButton{
-    left:355px;
-    top:113px;
-}
+
 .modal{
     display: block;
   
@@ -76,20 +61,14 @@ display: none;
 .burger-menu{
     left:63px;
 }
-.searchButton{
-    left:329px;
-   
+ 
 }
 
-}
 @media(max-width: 320px){
     .btn-movie{
         width: 84px;
     }
-    .searchButton{
-        left:228px;
-        top:113px;
-    }
+ 
     .burger-menu{
         left:40px;
     }
