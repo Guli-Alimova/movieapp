@@ -1,7 +1,7 @@
 // import { styled } from "@mui/system";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useState } from "react/cjs/react.development";
+import { useState } from "react";
 import styled from "styled-components";
 import { ORIGINAL_IMAGE_URL } from "../global";
 import { Progress } from "antd";
