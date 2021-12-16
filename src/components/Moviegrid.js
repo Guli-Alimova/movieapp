@@ -51,7 +51,8 @@ const Moviegrid = (props) => {
         }
         discover();
 
-    },[movies, prevGenre, prevPage, page, props.genre ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[  props.genre, page]);
 
 
     return (
