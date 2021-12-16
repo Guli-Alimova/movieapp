@@ -1,6 +1,7 @@
 import {Link} from 'react-router-dom';
 import Burger from "./Burger";
 import { useState } from 'react';
+import {GrClose} from "react-icons/gr";
 
 
 const Header = ()=>{
@@ -24,7 +25,7 @@ const Header = ()=>{
               <button className="burger-btn" onClick={()=>{
                   setOpenModal(openModal ? false : true);
               }}>
-                  { openModal ? <img src="/img/Без названия.png" width="30px" alt="iks"/> : <img className="burger-img" src="/img/Hamburger_icon.svg.png" alt="burger"/> }
+                  { openModal ? <GrClose style={{fontSize:"20px"}}/> : <img className="burger-img" src="/img/Hamburger_icon.svg.png" alt="burger"/> }
               </button>
            {openModal && <Burger  closeModel={setOpenModal} />} 
            </div>

@@ -234,12 +234,7 @@ similar();
             <SwiperSlide key={el.id}><ActorCard actorobj={el} /></SwiperSlide> ))}
         </Swiper> : ''}
       </div>
-      </section>
-
-      {/* Similar */}
-
-      <section className="similar">
-        <div className="container">
+      <div className="container">
         <h2>Top Similar</h2>
             {error ? <h3>{error}</h3>: ''}
             {isLoading ? <Loader/> : ''} 
@@ -287,8 +282,9 @@ similar();
         </div>
       </div>
      
-    
       </section>
+
+
     </div>
 
   );
